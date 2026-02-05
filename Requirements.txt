@@ -1,0 +1,5 @@
+re
+contractions
+spaCy
+emoji
+NLTK
