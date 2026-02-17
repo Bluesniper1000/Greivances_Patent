@@ -1,6 +1,5 @@
 # Hostel Grievance Urgency Classification & Routing System
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![TensorFlow 2.10+](https://img.shields.io/badge/TensorFlow-2.10+-orange.svg)](https://www.tensorflow.org/)
 
@@ -589,34 +588,6 @@ curl -X POST "http://localhost:8000/batch-predict" \
 
 ---
 
-## Future Enhancements
-
-### Short-Term (Next 3-6 Months)
-
-- [ ] **FAISS Integration**: Replace custom vector store with FAISS for million-scale similarity search
-- [ ] **Active Learning**: Flag uncertain predictions for manual review, retrain periodically
-- [ ] **Multi-Language Support**: Extend to Hindi, regional languages using multilingual BERT
-- [ ] **Mobile App Integration**: REST API consumption from student-facing mobile app
-- [ ] **Dashboard**: Real-time monitoring dashboard for hostel administrators
-
-### Medium-Term (6-12 Months)
-
-- [ ] **Explainability Module**: LIME/SHAP integration for per-prediction explanations
-- [ ] **Reinforcement Learning**: Optimize routing decisions based on satisfaction scores
-- [ ] **Graph Neural Networks**: Model hostel infrastructure as graph (rooms, floors, systems) for better context
-- [ ] **Automated Batch Resolution**: Group similar complaints for single dispatch
-- [ ] **Predictive Maintenance**: Forecast failures before complaints arrive (time-series analysis)
-
-### Long-Term (12+ Months)
-
-- [ ] **Multi-Modal Input**: Image upload support (broken fixtures, leaks)
-- [ ] **Voice Complaint**: Speech-to-text pipeline for phone complaints
-- [ ] **Cross-Hostel Learning**: Federated learning across multiple institutions
-- [ ] **Resource Optimization**: Joint optimization of complaint routing + staff scheduling
-- [ ] **Compliance Monitoring**: Automatic SLA violation detection + escalation
-
----
-
 ## Contributing
 
 We welcome contributions! Areas of interest:
@@ -660,30 +631,6 @@ open htmlcov/index.html
 
 ---
 
-## Citation
-
-If you use this system in academic research, please cite:
-
-```bibtex
-@software{hostel_grievance_system_2026,
-  author = {Your Name},
-  title = {Hostel Grievance Urgency Classification and Routing System},
-  year = {2026},
-  publisher = {GitHub},
-  url = {https://github.com/your-org/hostel-patent}
-}
-```
-
----
-
-## License
-
-This project is licensed under the **MIT License** - see [LICENSE](LICENSE) file for details.
-
-**Patent Disclosure**: The multi-signal decision fusion framework, density-aware prioritization, and temporal burst detection methods described in [docs/decision_logic.md](docs/decision_logic.md) are subject to pending patent applications.
-
----
-
 ## Acknowledgments
 
 - **FastText**: Facebook AI Research for pretrained word embeddings
@@ -691,18 +638,6 @@ This project is licensed under the **MIT License** - see [LICENSE](LICENSE) file
 - **HDBSCAN**: Leland McInnes for robust clustering algorithm
 - **TensorFlow/Keras**: Google for deep learning framework
 - **spaCy**: Explosion AI for NLP pipeline
-
----
-
-## Contact
-
-**Project Maintainer**: [Your Name](mailto:your.email@example.com)  
-**Institution**: [Your Institution]  
-**Project Repository**: https://github.com/your-org/hostel-patent
-
-For questions, issues, or collaboration inquiries, please open an issue on GitHub or contact the maintainer directly.
-
----
 
 ## Project Status
 
@@ -799,16 +734,6 @@ python -m pytest tests/test_preprocessing.py
 python -m pytest --cov=src tests/
 ```
 
-### Code Style
-
-```bash
-# Format code
-black src/ tests/ scripts/
-
-# Lint
-flake8 src/ tests/
-```
-
 ## Documentation
 
 See the `docs/` directory for detailed documentation:
@@ -816,21 +741,6 @@ See the `docs/` directory for detailed documentation:
 - [data_flow.md](docs/data_flow.md) - Data processing pipeline
 - [decision_logic.md](docs/decision_logic.md) - Decision engine rules
 
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests for new functionality
-5. Submit a pull request
-
-## License
-
-[Your License Here]
-
-## Contact
-
-[Your Contact Information]
 
 ## Acknowledgments
 
