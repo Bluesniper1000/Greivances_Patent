@@ -12,10 +12,10 @@ from pathlib import Path
 import numpy as np
 from sklearn.model_selection import train_test_split
 
-from src.models import CNNModel, BiLSTMModel, CNNBiLSTMModel
-from src.training import ModelTrainer
-from src.config import MODEL_CONFIG, TRAINING_CONFIG, MODELS_DIR, LOGS_DIR
-from src.utils import setup_logger, load_json
+from Src.Models import CNNModel, BiLSTMModel, CNNBiLSTMModel
+from Src.Training import ModelTrainer
+from Src.config import MODEL_CONFIG, TRAINING_CONFIG, MODELS_DIR, LOGS_DIR
+from Src.utils import setup_logger, load_json
 
 
 def load_data(data_dir: Path):

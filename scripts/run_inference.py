@@ -12,10 +12,10 @@ from pathlib import Path
 import json
 from datetime import datetime
 
-from src.inference import GrievancePredictor
-from src.decision_engine import UrgencyDecisionEngine
-from src.utils import setup_logger, save_json
-from src.config import FASTTEXT_MODEL_PATH
+from Src.Inference import GrievancePredictor
+from Src.Decision_Engine import UrgencyDecisionEngine
+from Src.utils import setup_logger, save_json
+from Src.config import FASTTEXT_MODEL_PATH
 
 
 def main():
