@@ -17,7 +17,7 @@ The `HostelDB` class originally utilized raw SQL execution (`conn.cursor().execu
 #### ORM Model Definition
 An explicit declarative model was introduced to represent the database table:
 ```python
-from sqlalchemy import Column, String, DateTime, Text
+from sqlalchemy import Column, String, DateTime, Text, Integer, text
 from sqlalchemy.orm import declarative_base
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.sql import func
@@ -31,6 +31,7 @@ class HostelIncident(Base):
     timestamp = Column(DateTime)
     raw_text = Column(Text, nullable=False)
     preprocessing_data = Column(JSONB)
+    vector_id = Column(Integer, unique=True, nullable=True) # Linked to FAISS index
     db_received_at = Column(DateTime, default=func.now())
 ```
 
@@ -57,6 +58,14 @@ Instead of executing a `CREATE TABLE IF NOT EXISTS` string, it now utilizes SQLA
 def initialize_tables(self):
     """Creates the hostel incident table if it doesn't exist."""
     Base.metadata.create_all(bind=self.engine)
+    
+    # Safe fallback migration for existing tables to add vector_id
+    try:
+        with self.engine.connect() as conn:
+            conn.execute(text("ALTER TABLE hostel_incidents ADD COLUMN vector_id INTEGER UNIQUE;"))
+            conn.commit()
+    except Exception:
+        pass
 ```
 
 #### Incident Insertion (with Upsert logic)
@@ -64,13 +73,14 @@ The `ON CONFLICT (complaint_id) DO NOTHING` logic from raw SQL was replicated us
 ```python
 from sqlalchemy.dialects.postgresql import insert
 
-def insert_incident(self, complaint_id, timestamp, raw_text, preprocessing_data):
+def insert_incident(self, complaint_id, timestamp, raw_text, preprocessing_data, vector_id=None):
     with self.get_session() as session:
         stmt = insert(HostelIncident).values(
             complaint_id=complaint_id,
             timestamp=timestamp,
             raw_text=raw_text,
-            preprocessing_data=preprocessing_data
+            preprocessing_data=preprocessing_data,
+            vector_id=vector_id
         )
         # Use PostgreSQL ON CONFLICT DO NOTHING
         stmt = stmt.on_conflict_do_nothing(index_elements=['complaint_id'])
