@@ -110,10 +110,16 @@ Institutional hostels receive **hundreds to thousands** of complaints daily acro
 - Adaptive weight tuning based on system state
 - Override rules for safety-critical edge cases
 
-✅ **RESTful API**
+✅ **RESTful API & Visual Intelligence Frontend**
 - FastAPI endpoint for real-time predictions
-- Batch processing support
-- Explainable outputs with decision breakdown
+- Next.js Admin Dashboard with Recharts visualization
+- Live Heatmaps & Systemic Cluster Trends
+- Real-time SLA breach indicators
+
+✅ **Intelligent Summarization**
+- HuggingFace Transformers integration (`distilbart-cnn-12-6`)
+- Auto-extracts concise summaries from long grievances
+- Runs concurrently without blocking the core AI inference layer
 
 ---
 
@@ -279,6 +285,12 @@ hostel-patent/
 │       ├── __init__.py
 │       ├── helpers.py                 # General helpers
 │       └── logger.py                  # Logging configuration
+│
+├── frontend/                          # Next.js Visual Intelligence UI
+│   ├── src/app/                       # App Router paths
+│   │   ├── submit/                    # Student Form (/submit)
+│   │   └── admin/                     # Dashboard with Recharts (/admin)
+│   └── package.json                   # UI Dependencies
 │
 └── tests/                             # Unit and integration tests
     ├── test_preprocessing.py
@@ -461,6 +473,32 @@ uvicorn main:app --host 0.0.0.0 --port 8000 --reload
 **API accessible at**: `http://localhost:8000`
 
 **Interactive docs**: `http://localhost:8000/docs`
+
+### 6. Start the Visual Intelligence Frontend
+
+In a new terminal window:
+
+```bash
+cd frontend
+npm run dev
+```
+
+**Frontend available at:**
+- Dashboard: `http://localhost:3000/admin`
+- Student Form: `http://localhost:3000/submit`
+
+---
+
+## Configuration & Environment Variables
+
+You can adjust standard configurations in `src/config.py`.
+
+### Summarization Module
+The new auto-summarization feature uses `sshleifer/distilbart-cnn-12-6` and runs lazily. It can be toggled inside `src/config.py`:
+- `ENABLE_SUMMARIZATION = True`
+- `SUMMARIZER_MODEL_NAME = "sshleifer/distilbart-cnn-12-6"`
+
+*Ensure you have `transformers` and `torch` correctly installed as specified in requirements.*
 
 ---
 

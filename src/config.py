@@ -63,6 +63,12 @@ PREPROCESSING_CONFIG = {
     ],
 }
 
+# Summarization configuration
+ENABLE_SUMMARIZATION = True
+SUMMARIZER_MODEL_NAME = "sshleifer/distilbart-cnn-12-6"
+MAX_SUMMARY_LENGTH = 60
+MIN_SUMMARY_LENGTH = 10
+
 # FastText model path (update with actual path)
 FASTTEXT_MODEL_PATH = os.getenv(
     "FASTTEXT_MODEL_PATH",

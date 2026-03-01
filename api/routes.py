@@ -5,6 +5,7 @@ API routes for grievance prediction.
 from fastapi import APIRouter, HTTPException
 from typing import List
 import time
+import asyncio
 from pathlib import Path
 
 from .schemas import (
@@ -18,6 +19,7 @@ from .schemas import (
 from src.inference import GrievancePredictor
 from src.decision_engine import UrgencyDecisionEngine
 from src.config import MODELS_DIR, FASTTEXT_MODEL_PATH
+from src.summarization.summarizer import summarizer_instance
 
 
 router = APIRouter()
@@ -65,7 +67,13 @@ async def predict_urgency(request: ComplaintRequest):
         # Get predictor
         pred = get_predictor()
         
-        # Make prediction
+        # Prepare tasks for parallel execution
+        loop = asyncio.get_event_loop()
+        
+        # Summary generation runs in threadpool to not block the event loop
+        summary_future = loop.run_in_executor(None, summarizer_instance.summarize, request.complaint_text)
+        
+        # Make prediction (synchronous operation)
         result = pred.predict(
             complaint_text=request.complaint_text,
             timestamp=request.timestamp,
@@ -73,6 +81,9 @@ async def predict_urgency(request: ComplaintRequest):
             complaint_type=request.complaint_type,
             return_probabilities=True
         )
+        
+        # Wait for summary to finish
+        summary = await summary_future
         
         # Apply decision engine
         decision = decision_engine.make_decision(
@@ -83,6 +94,7 @@ async def predict_urgency(request: ComplaintRequest):
         result['decision_details'] = decision
         result['urgency_level'] = decision['urgency_level']
         result['confidence'] = decision['confidence']
+        result['summary'] = summary
         
         processing_time = (time.time() - start_time) * 1000
         
@@ -114,6 +126,10 @@ async def predict_batch(request: ComplaintBatchRequest):
         
         results = []
         for complaint in request.complaints:
+            # Prepare tasks for parallel execution
+            loop = asyncio.get_event_loop()
+            summary_future = loop.run_in_executor(None, summarizer_instance.summarize, complaint.complaint_text)
+            
             result = pred.predict(
                 complaint_text=complaint.complaint_text,
                 timestamp=complaint.timestamp,
@@ -121,6 +137,8 @@ async def predict_batch(request: ComplaintBatchRequest):
                 complaint_type=complaint.complaint_type,
                 return_probabilities=True
             )
+            
+            summary = await summary_future
             
             # Apply decision engine
             decision = decision_engine.make_decision(
@@ -131,6 +149,7 @@ async def predict_batch(request: ComplaintBatchRequest):
             result['decision_details'] = decision
             result['urgency_level'] = decision['urgency_level']
             result['confidence'] = decision['confidence']
+            result['summary'] = summary
             
             results.append(UrgencyPrediction(**result))
         
