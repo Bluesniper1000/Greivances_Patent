@@ -42,6 +42,7 @@ class UrgencyPrediction(BaseModel):
     confidence: float = Field(..., description="Prediction confidence score")
     cleaned_text: str = Field(..., description="Preprocessed text")
     tokens: List[str] = Field(..., description="Extracted tokens")
+    summary: Optional[str] = Field(None, description="Summarized complaint text")
     temporal_features: Optional[Dict] = Field(None, description="Temporal context")
     probabilities: Optional[Dict[str, float]] = Field(None, description="Class probabilities")
     decision_details: Optional[Dict] = Field(None, description="Decision engine details")
